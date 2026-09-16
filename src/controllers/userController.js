@@ -19,5 +19,17 @@ async function createUser(req,res) {
     
 }
 
+async function getAll(req,res,next) {
 
-module.exports = {createUser}
+    try{
+
+      let users = await userService.getAll();
+     return res.status(201).json(users);
+    }catch(error){
+        next(error)
+    }
+    
+}
+
+
+module.exports = {createUser,getAll}

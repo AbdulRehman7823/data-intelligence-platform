@@ -3,8 +3,9 @@ const cors = require("cors");
 
 const app = express();
 
-
+const datasetRoutes = require("./routes/datasetRoutes");
 const userRouter = require("./routes/userRoutes");
+
 
 app.use(cors());
 app.use(express.json());
@@ -17,12 +18,9 @@ app.get("/health",(req,res)=>{
 });
 
 app.use("/users", userRouter);
+app.use("/dataset",datasetRoutes);
 
-const pool = require("./config/database");
-pool.query("SELECT * FROM users").then((result=>{
-console.log(result.rows);
 
-}))
 
 
 module.exports = app;
