@@ -1,9 +1,11 @@
 const express = require("express");
 
 const datasetController = require("../controllers/datasetController");
+const authenticate = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
+router.use(authenticate);
 router.post("/", datasetController.createDataset);
 
 router.get("/", datasetController.getDatasets);

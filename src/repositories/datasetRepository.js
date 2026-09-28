@@ -22,14 +22,15 @@ async function createDataset(userId, name, filePath) {
   return result.rows[0];
 }
 
-async function findDatasetById(id) {
+async function findDatasetById(id, userId) {
   const result = await pool.query(
     `
     SELECT *
     FROM datasets
     WHERE id = $1
+    AND user_id = $2
     `,
-    [id]
+    [id, userId]
   );
 
   return result.rows[0];
@@ -51,7 +52,7 @@ async function findDatasetsByUserId(userId, limit, offset) {
   return result.rows;
 }
 
-async function updateDataset(id, name, status) {
+async function updateDataset(id,userId, name, status) {
   const result = await pool.query(
     `
     UPDATE datasets
@@ -60,22 +61,24 @@ async function updateDataset(id, name, status) {
       status = COALESCE($3, status),
       updated_at = CURRENT_TIMESTAMP
     WHERE id = $1
+    AND user_id = $4
     RETURNING *
     `,
-    [id, name, status]
+    [id, name, status,userId]
   );
 
   return result.rows[0];
 }
 
-async function deleteDataset(id) {
+async function deleteDataset(id,userId) {
   const result = await pool.query(
     `
     DELETE FROM datasets
     WHERE id = $1
+    AND user_id = $2
     RETURNING *
     `,
-    [id]
+    [id,userId]
   );
 
   return result.rows[0];

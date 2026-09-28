@@ -8,10 +8,12 @@ async function createDataset(userId, name, filePath) {
   );
 }
 
-async function getDataset(id) {
-  return datasetRepository.findDatasetById(id);
+async function getDataset(id, userId) {
+  return datasetRepository.findDatasetById(
+    id,
+    userId
+  );
 }
-
 async function getDatasets(userId, limit, offset) {
   return datasetRepository.findDatasetsByUserId(
     userId,
@@ -20,16 +22,17 @@ async function getDatasets(userId, limit, offset) {
   );
 }
 
-async function updateDataset(id, name, status) {
+async function updateDataset(id, userId, name, status) {
   return datasetRepository.updateDataset(
     id,
+    userId,
     name,
     status
   );
 }
 
-async function deleteDataset(id) {
-  return datasetRepository.deleteDataset(id);
+async function deleteDataset(id,userId) {
+  return datasetRepository.deleteDataset(id,userId);
 }
 
 module.exports = {

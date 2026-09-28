@@ -1,17 +1,18 @@
 const datasetService = require("../services/datasetService");
 
+
 async function createDataset(req, res, next) {
   try {
-    const { userId, name, filePath } = req.body;
+    const {  name, filePath } = req.body;
 
-    if (!userId || !name) {
+    if (!name) {
       return res.status(400).json({
-        error: "userId and name are required"
+        error: "name is required"
       });
     }
 
     const dataset = await datasetService.createDataset(
-      userId,
+      req.user.userId,
       name,
       filePath || null
     );
@@ -24,9 +25,11 @@ async function createDataset(req, res, next) {
 
 async function getDataset(req, res, next) {
   try {
+   
     const dataset = await datasetService.getDataset(
-      req.params.id
-    );
+  req.params.id,
+  req.user.userId
+);
 
     if (!dataset) {
       return res.status(404).json({
@@ -84,6 +87,7 @@ async function updateDataset(req, res, next) {
 
     const dataset = await datasetService.updateDataset(
       req.params.id,
+       req.user.userId,
       name,
       status
     );
@@ -103,7 +107,8 @@ async function updateDataset(req, res, next) {
 async function deleteDataset(req, res, next) {
   try {
     const dataset = await datasetService.deleteDataset(
-      req.params.id
+      req.params.id,
+       req.user.userId
     );
 
     if (!dataset) {
